@@ -1,6 +1,7 @@
 #pragma once
 #include <vector>
 #include "structs.h"
+#include <string>
 
 namespace utils
 {
@@ -46,6 +47,7 @@ namespace utils
 	void DrawPolygon( const std::vector<Point2f>& vertices, bool closed = true, float lineWidth = 1.0f );
 	void DrawPolygon( const Point2f* pVertices, size_t nrVertices, bool closed = true, float lineWidth = 1.0f );
 	void FillPolygon( const std::vector<Point2f>& vertices);
-	void FillPolygon( const Point2f* pVertices, size_t nrVertices);
+	void FillPolygon(const Point2f* pVertices, size_t nrVertices);
+
 #pragma endregion OpenGLDrawFunctionality
 }

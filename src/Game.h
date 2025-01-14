@@ -67,6 +67,7 @@ public:
 		else if (e.button == SDL_BUTTON_RIGHT)
 		{
 			// Handle right mouse button press
+			m_Player.Mirror();
 		}
 	}
 	void ProcessMouseUpEvent(const SDL_MouseButtonEvent& e)

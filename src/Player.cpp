@@ -15,6 +15,8 @@ Player::Player(const Point2f& pos)
 	, m_Dizziness{}
 	, m_DizzinessRegen{ 0.05f }
 	, m_DizzinessMax{100}
+	, m_MirrorUses{3}
+	, m_MirrorUsesMax{3}
 	, m_CurrentRotationTarget{}
 	, m_RotationTargets{}
 	, m_Angle{ 0.0f }
@@ -227,12 +229,26 @@ void Player::HandleCollision()
 
 void Player::Mirror()
 {
-	m_MirrorPlane[0] = m_CurrentRotationTarget[0];
-	m_MirrorPlane[1] = m_CurrentRotationTarget[1];
-	m_Position = (-m_MirrorPlane * m_Position * m_MirrorPlane).Grade3();
-	
-	m_DirectionVector *= -1;
-	--m_MirrorUses;
+	if (!m_IsRotating && m_MirrorUses > 0)
+	{
+		// Entering rotation: Compute rotation speed and direction
+		//float dx = 1280 - m_CurrentRotationTarget[0];
+		//float dy = 720 - m_CurrentRotationTarget[1];
+		//
+		//m_MirrorPlane[0] = 0;
+		//m_MirrorPlane[1] = dy;
+		//
+		//std::cout << dy << std::endl;
+		m_Position = (m_MirrorPlane * m_Position *~ m_MirrorPlane).Grade3();
+
+		//m_MirrorPlane[0] = dx;
+		//m_MirrorPlane[1] = 0;
+		//m_Position = (m_MirrorPlane * m_Position * ~m_MirrorPlane).Grade3();
+
+
+		m_DirectionVector *= -1;
+		--m_MirrorUses;
+	}
 }
 
 #pragma endregion

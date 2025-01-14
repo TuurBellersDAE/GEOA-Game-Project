@@ -4,6 +4,7 @@
 #include <iostream>
 #include <SDL_opengl.h>
 #include "utils.h"
+#include <SDL_ttf.h>
 
 
 #pragma region OpenGLDrawFunctionality
@@ -275,4 +276,5 @@ void utils::FillPolygon( const Point2f *pVertices, size_t nrVertices )
 	}
 	glEnd( );
 }
+
 #pragma endregion OpenGLDrawFunctionality

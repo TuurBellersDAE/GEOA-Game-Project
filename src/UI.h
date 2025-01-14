@@ -16,5 +16,7 @@ private:
 	float m_BarPadding;
 	Color4f m_EnergyBarColor;
 	Color4f m_DizzinessBarColor;
+	Color4f m_MirrorBarColor;
 	Color4f m_BackgroundColor;
+	float m_CircleRadius; // New member variable for circle radius
 };
