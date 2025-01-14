@@ -28,6 +28,7 @@ public:
 	void ToggleBoosting(const bool keyDown);
 	void ToggleRotating();
 	void HandleCollision();
+	void TriggerCollision();
 	void Mirror();
 
 	void GenerateParticles(float elapsedSec);
@@ -37,7 +38,8 @@ public:
 	void ChangeRotationTarget(Point2f mousePos, float radius, bool isPressed);
 	void CalculateTangent();
 
-	void TakeDamage(float damage);
+	void TakeDamage();
+	void AddMirrorUses();
 
 	Point2f GetPosition() const;
 	Rectf GetBoundaries() const;
@@ -49,6 +51,9 @@ public:
 	int GetMirrorUses() const;
 	int GetMirrorUsesMax() const;
 
+	bool IsRotating() const;
+	bool IsBoosting() const;
+
 private:
     MultiVector m_Player;
 
@@ -58,6 +63,7 @@ private:
     float& m_Energy;
 	float m_EnergyMax;
 	float m_EnergyRegen;
+	bool m_IsBoostOnCooldown;
 
 	float m_Health;
 	float m_Dizziness;

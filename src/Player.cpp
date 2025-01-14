@@ -11,7 +11,7 @@ Player::Player(const Point2f& pos)
 	, m_Energy{ m_Player[0] }
 	, m_EnergyMax{ 100.f }
 	, m_EnergyRegen{ 0.05f }
-	, m_Health {}
+	, m_Health {100}
 	, m_Dizziness{}
 	, m_DizzinessRegen{ 0.05f }
 	, m_DizzinessMax{100}
@@ -30,6 +30,7 @@ Player::Player(const Point2f& pos)
 	, m_MaxRotationSpeed{ 180.0f }
 	, m_IsBoosting{ false }
 	, m_IsRotating{ false }
+	, m_IsBoostOnCooldown{ false }
 {
 	m_Energy = 100.f;
 }
@@ -162,7 +163,19 @@ void Player::SlowDown(float elapsedSec)
 
 void Player::ToggleBoosting(const bool keyDown)
 {
-	m_IsBoosting = keyDown;
+	if (m_Energy >= m_EnergyMax)
+	{
+		m_IsBoostOnCooldown = false;
+	}
+
+	if (m_Energy > 0.1 && !m_IsBoostOnCooldown)
+	{
+		m_IsBoosting = keyDown;
+	}
+	else
+	{
+		m_IsBoostOnCooldown = true;
+	}
 }
 
 void Player::ToggleRotating()
@@ -225,6 +238,14 @@ void Player::HandleCollision()
 		m_DirectionVector[1] *= -0.9f - static_cast<float>(std::rand()) / (static_cast<float>(RAND_MAX / (-1.0f + 0.9f)));
 		m_DirectionVector.VNormalize(); //Created a function to normalize the direction vector thus VNolmalize() else the direction vectors values will keep dropping closer to zero
 	}
+}
+
+void Player::TriggerCollision()
+{
+	// Collision detected, bounce off
+	m_DirectionVector[0] *= -1.0f;
+	m_DirectionVector[1] *= -1.0f;
+	m_DirectionVector.VNormalize();
 }
 
 void Player::Mirror()
@@ -348,6 +369,16 @@ void Player::CalculateTangent()
 
 #pragma region Getters
 
+void Player::TakeDamage()
+{
+	m_Health -= 10;
+}
+
+void Player::AddMirrorUses()
+{
+	++m_MirrorUses;
+}
+
 Point2f Player::GetPosition() const
 {
 	return Point2f();
@@ -394,6 +425,16 @@ int Player::GetMirrorUses() const
 int Player::GetMirrorUsesMax() const
 {
 	return m_MirrorUsesMax;
+}
+
+bool Player::IsRotating() const
+{
+	return m_IsRotating;
+}
+
+bool Player::IsBoosting() const
+{
+	return m_IsBoosting;
 }
 
 #pragma endregion

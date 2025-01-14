@@ -193,6 +193,28 @@ void Game::CleanupGameEngine()
 
 }
 
+void Game::EnemySpawner(float elapsedSec)
+{
+	m_SpawnTimer += elapsedSec;
+
+	if (m_SpawnTimer >= m_SpawnInterval)
+	{
+		m_SpawnTimer = 0.0f;
+
+		for (auto& enemy : m_Enemies)
+		{
+			if (enemy.IsDead())
+			{
+				// Revive the enemy at a random position
+				float x = static_cast<float>(std::rand() % static_cast<int>(m_Viewport.width));
+				float y = static_cast<float>(std::rand() % static_cast<int>(m_Viewport.height));
+				enemy.Revive(Point2f(x, y));
+				return; // Only revive one enemy per interval
+			}
+		}
+	}
+}
+
 void Game::Update(float elapsedSec)
 {
 	switch (m_GameState)
@@ -207,7 +229,12 @@ void Game::Update(float elapsedSec)
 		break;
 	}
 	m_Player.Update(elapsedSec);
+	for (auto& enemy : m_Enemies)
+	{
+		enemy.Update(elapsedSec, m_Player);
+	}
 	m_UI.Update(elapsedSec);
+	EnemySpawner(elapsedSec);
 }
 
 void Game::Draw() const
@@ -229,6 +256,10 @@ void Game::Draw() const
 	}
 
 	m_Player.Draw();
+	for (const auto& enemy : m_Enemies)
+	{
+		enemy.Draw();
+	}
 	m_UI.Draw();
 
 	for (auto& pillar : m_Pillars)

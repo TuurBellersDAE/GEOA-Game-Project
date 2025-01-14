@@ -5,6 +5,7 @@
 #include "Player.h"
 #include "UI.h"
 #include "Pillar.h"
+#include "Enemy.h"
 
 enum class GameState
 {
@@ -109,14 +110,24 @@ private:
 	GameState m_GameState{ GameState::Playing };
 
 	Player m_Player{ Point2f{200,400} };
+	std::vector<Enemy> m_Enemies{
+		Enemy{ Point2f{400,200} },
+		Enemy{ Point2f{600,400} }
+	};
+
 	UI m_UI{ m_Player };
-	Pillar m_CoolPillar1{ Point2f{m_Window.width / 2,m_Window.height / 2}, 10};
-	Pillar m_CoolPillar2{ Point2f{m_Window.width / 3,m_Window.height / 3}, 10};
+    
 	std::vector<Pillar> m_Pillars{
-		m_CoolPillar1,
-		m_CoolPillar2
+		Pillar{ Point2f{m_Window.width / 2 + 170, m_Window.height / 2 + 150}, 10 },
+		Pillar{ Point2f{m_Window.width / 2 - 170, m_Window.height / 2 + 150}, 10 },
+		Pillar{ Point2f{m_Window.width / 2 - 170, m_Window.height / 2 - 150}, 10 },
+		Pillar{ Point2f{m_Window.width / 2 + 170, m_Window.height / 2 - 150}, 10 }
 	};
 
 	Point2f m_MousePos;
 	float m_MouseRadius{40};
+
+	void EnemySpawner(float elapsedSec);
+	float m_SpawnTimer{ 0.0f };
+	const float m_SpawnInterval{ 5.0f }; // Spawn interval in seconds
 };

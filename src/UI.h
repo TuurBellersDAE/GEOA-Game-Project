@@ -5,7 +5,9 @@
 class UI
 {
 public:
-	UI(const Player& player);
+	explicit UI(const Player& player);
+	~UI();
+
 	void Update(float elapsedSec);
 	void Draw() const;
 
@@ -18,5 +20,10 @@ private:
 	Color4f m_DizzinessBarColor;
 	Color4f m_MirrorBarColor;
 	Color4f m_BackgroundColor;
-	float m_CircleRadius; // New member variable for circle radius
+	float m_CircleRadius;
+
+	void DrawHealthBar() const;
+	void DrawEnergyBar() const;
+	void DrawDizzinessBar() const;
+	void DrawMirrorUses() const;
 };
