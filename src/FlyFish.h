@@ -283,9 +283,9 @@ public:
         return std::sqrt(data[1] * data[1] + data[5] * data[5] + data[6] * data[6] + data[7] * data[7] + data[11] * data[11] + data[12] * data[12] + data[13] * data[13] + data[15] * data[15]);
     }
 
-    [[nodiscard]] OneBlade Grade1() const;
-    [[nodiscard]] TwoBlade Grade2() const;
-    [[nodiscard]] ThreeBlade Grade3() const;
+    [[nodiscard]] OneBlade& Grade1() const;
+    [[nodiscard]] TwoBlade& Grade2() const;
+    [[nodiscard]] ThreeBlade& Grade3() const;
     [[nodiscard]] Motor ToMotor() const;
 
     [[nodiscard]] MultiVector operator ~() const{
@@ -479,6 +479,21 @@ public:
         return d;
     }
 
+    TwoBlade& VNormalize()
+    {
+        return (*this) /= VNorm();
+    }
+    [[nodiscard]] TwoBlade VNormalized() const
+    {
+        TwoBlade d{};
+        float mult = 1 / VNorm();
+        for (size_t idx{}; idx < 6; idx++)
+        {
+            d[idx] = mult * data[idx];
+        }
+        return d;
+    }
+
     [[nodiscard]] float Norm() const
     {
         return std::sqrt(data[3] * data[3] + data[4] * data[4] + data[5] * data[5]);
@@ -650,10 +665,10 @@ public:
     }
 
     // Todo
-    //[[nodiscard]] Motor(float angle, float translation, const TwoBlade line) : GAElement()
-    //{
-    //    *this = Translation(translation, line) * Rotation(angle, line) * ~Translation(translation, line);
-    //}
+    [[nodiscard]] Motor(float angle, float translation, const TwoBlade line, const TwoBlade rotationDirection) : GAElement()
+    {
+        *this = Translation(translation, line) * Rotation(angle, rotationDirection) * ~Translation(translation, line);
+    }
 
     [[nodiscard]] static Motor Translation(float translation, const TwoBlade line)
     {

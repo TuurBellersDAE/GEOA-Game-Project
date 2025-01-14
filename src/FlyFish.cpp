@@ -8,34 +8,37 @@
         data[1], data[2], data[3], data[4], data[5], data[6]
     );
 }
-[[nodiscard]] OneBlade MultiVector::Grade1() const
+[[nodiscard]] OneBlade& MultiVector::Grade1() const
 {
-    return OneBlade{
-        data[1],
-        data[2],
-        data[3],
-        data[4]
-    };
+	OneBlade result{
+		data[1],
+		data[2],
+		data[3],
+		data[4]
+	};
+	return result;
 }
-[[nodiscard]] TwoBlade MultiVector::Grade2() const
+[[nodiscard]] TwoBlade& MultiVector::Grade2() const
 {
-    return TwoBlade{
-        data[5],
-        data[6],
-        data[7],
-        data[8],
-        data[9],
-        data[10]
-    };
+	TwoBlade result{
+		data[5],
+		data[6],
+		data[7],
+		data[8],
+		data[9],
+		data[10]
+	};
+	return result;
 }
-[[nodiscard]] ThreeBlade MultiVector::Grade3() const
+[[nodiscard]] ThreeBlade& MultiVector::Grade3() const
 {
-    return ThreeBlade{
-        data[11],
-        data[12],
-        data[13],
-        data[14],
-    };
+	ThreeBlade result{
+		data[11],
+		data[12],
+		data[13],
+		data[14],
+	};
+	return result;
 }
 [[nodiscard]] Motor MultiVector::ToMotor() const
 {

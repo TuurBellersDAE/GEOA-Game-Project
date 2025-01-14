@@ -118,6 +118,8 @@ void Game::Run()
 	// Set start time
 	std::chrono::steady_clock::time_point t1 = std::chrono::steady_clock::now();
 
+	m_Player.LoadRotationTargets(m_Pillars);
+
 	//The event loop
 	SDL_Event e{};
 	while (!quit)
@@ -193,8 +195,44 @@ void Game::CleanupGameEngine()
 
 void Game::Update(float elapsedSec)
 {
+	switch (m_GameState)
+	{
+	case GameState::Menu:
+		break;
+	case GameState::Playing:
+		break;
+	case GameState::Paused:
+		break;
+	case GameState::GameOver:
+		break;
+	}
+	m_Player.Update(elapsedSec);
+	m_UI.Update(elapsedSec);
 }
 
 void Game::Draw() const
 {
+	glClearColor(0, 0, 0, 1);
+	glClear(GL_COLOR_BUFFER_BIT);
+
+	switch (m_GameState)
+	{
+	case GameState::Menu:
+		break;
+	case GameState::Playing:
+		utils::DrawEllipse(Point2f(m_MousePos.x, m_MousePos.y), m_MouseRadius, m_MouseRadius);
+		break;
+	case GameState::Paused:
+		break;
+	case GameState::GameOver:
+		break;
+	}
+
+	m_Player.Draw();
+	m_UI.Draw();
+
+	for (auto& pillar : m_Pillars)
+	{
+		pillar.Draw();
+	}
 }
